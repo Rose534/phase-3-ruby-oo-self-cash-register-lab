@@ -30,13 +30,14 @@ class CashRegister
   end
 
   def void_last_transaction
-    if @items.empty?
-      @total = 0.0
-    else
-      @total -= price
-      @items.pop
-    end
+    return "No items have been added." if @items.empty?
+
+    item = @items.pop
+    item_price = @total / @items.length
+    @total -= item_price
+    "The last item, #{item}, has been removed. The new total is $#{@total}."
   end
+
 
   def apply_discount
     if discount > 0
