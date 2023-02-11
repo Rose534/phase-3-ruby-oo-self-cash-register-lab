@@ -1,40 +1,50 @@
+require 'pry'
+
 class CashRegister
-    
-  def initialize(employee_discount = nil)
-    @employee_discount = employee_discount
-    @total = 0.0
+  attr_accessor :total
+  attr_reader :discount
+  attr_writer :dollars
+
+  def initialize (discount = 0)
+    @discount = discount
+    @total = 0
     @items = []
   end
 
-  def total
-    @total
-  end
-
-  def add_item(title, price, quantity = 1)
-    @total += price * quantity
-    quantity.times { @items << title }
-  end
-
-  def apply_discount
-    if @employee_discount
-      @total -= (@total * @employee_discount / 100)
-      "After the discount, the total comes to $#{@total.round(2)}."
-    else
-      "There is no discount to apply."
+  def add_item(title, price, amount = 1)
+    @total += price * amount
+    amount.times do
+      @items << title
     end
-  end
+  end 
 
-  def items(title = nil, price = nil, quantity = nil)
-    if title && price && quantity
-      @items.map { |item| [item, price, quantity] }
+  def items(item = nil, price = nil, amount = nil)
+    if item && price && amount
+      amount.times do
+        @items << item
+      end
+      @items
     else
-      @items.dup
+      @items
     end
   end
 
   def void_last_transaction
-    @total = 0.0
-    @items = []
-    
+    if @items.empty?
+      @total = 0.0
+    else
+      @total -= price
+      @items.pop
+    end
+  end
+
+  def apply_discount
+    if discount > 0
+      my_discount = @total * @discount/100
+      @total = @total - my_discount
+      "After the discount, the total comes to $#{@total}."
+    else 
+      "There is no discount to apply."
+    end 
   end
 end
