@@ -35,7 +35,7 @@ class CashRegister
     item = @items.pop
     item_price = @total / @items.length
     @total -= item_price
-    "The last item, #{item}, has been removed. The new total is $#{@total}."
+    "#{item}, has been removed. The new total is $#{@total}."
   end
 
 
